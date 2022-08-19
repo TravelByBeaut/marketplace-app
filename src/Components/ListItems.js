@@ -43,7 +43,7 @@ export default function ListItems() {
       item.description,
       item.img_url,
       item.price,
-      item.category_name
+      item.category_name ?? "Electronics"
     )
       .then(() => {
         navigate("/items");
