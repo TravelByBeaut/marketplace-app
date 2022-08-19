@@ -15,7 +15,7 @@ export default function NavBar() {
       });
   }, []);
 
-  return ( 
+  return (
     <>
       {categories.map((category) => {
         return (
@@ -29,7 +29,9 @@ export default function NavBar() {
           </Link>
         );
       })}
-      <button>List item</button>
+      <Link to="/items/addItem">
+        <button>List item</button>
+      </Link>
     </>
   );
 }

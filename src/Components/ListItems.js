@@ -1,62 +1,100 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { listItem } from "../api";
 
-export default function ListItems({ items, setItems, category, setCategory }) {
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
- 
-  const handleItemName = (event) => setItems(event.target.value);
-  const handleDescription = (event) => setDescription(event.target.value);
-  const handleCategory = (event) => setCategory(event.target.value);
+export default function ListItems() {
+  const [item, setItem] = useState({});
+  const navigate = useNavigate();
+
+  const handleItemName = (event) =>
+    setItem((currItem) => {
+      const itemCopy = { ...currItem };
+      itemCopy.item_name = event.target.value;
+      return itemCopy;
+    });
+  const handleDescription = (event) =>
+    setItem((currItem) => {
+      const itemCopy = { ...currItem };
+      itemCopy.description = event.target.value;
+      return itemCopy;
+    });
+  const handleCategory = (event) =>
+    setItem((currItem) => {
+      const itemCopy = { ...currItem };
+      itemCopy.category_name = event.target.value;
+      return itemCopy;
+    });
+  const handlePrice = (event) =>
+    setItem((currItem) => {
+      const itemCopy = { ...currItem };
+      itemCopy.price = event.target.value;
+      return itemCopy;
+    });
+  const handleImage = (event) =>
+    setItem((currItem) => {
+      const itemCopy = { ...currItem };
+      itemCopy.img_url = event.target.value;
+      return itemCopy;
+    });
   const handleSubmit = (event) => {
     event.preventDefault();
-  };
-  useEffect(() => {
     listItem(
-      items.item_name,
-      items.description,
-      items.img_url,
-      price,
-      items.category_name 
+      item.item_name,
+      item.description,
+      item.img_url,
+      item.price,
+      item.category_name
     )
-      .then(({ data }) => { 
-        setItems(data);
+      .then(() => {
+        navigate("/items");
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   return (
     <div className="list-items">
       <form>
-        <input
+        <textarea
           placeholder="item name"
-          value={items.item_name}
+          value={item.item_name}
           onChange={handleItemName}
           required
         />{" "}
         <textarea
           placeholder="description"
-          value={items.description}
+          value={item.description}
           onChange={handleDescription}
           required
         />{" "}
+        <select value={item.category_name} onChange={handleCategory} required>
+          <option>Electronics</option>
+          <option>Household</option>
+          <option>Clothing</option>
+        </select>{" "}
         <textarea
-          placeholder="category"
-          value={items.category_name}
-          onChange={handleCategory}
+          placeholder="price"
+          value={item.price}
+          onChange={handlePrice}
           required
         />{" "}
         <textarea
-          placeholder="category"
-          value={price}
-          onChange={handleCategory}
+          placeholder="image"
+          value={item.img_url}
+          onChange={handleImage}
           required
         />{" "}
-        <button type="submit" onClick={handleSubmit}>
-          List item
-        </button>
+        <Link to="/items">
+          <button type="submit" onClick={handleSubmit}>
+            Create listing
+          </button>
+        </Link>
+        <button onClick={refreshPage}>Delete Listing</button>
       </form>
     </div>
   );

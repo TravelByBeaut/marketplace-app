@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchItemsByCategory, fetchItems } from "../api";
-import ListItems from "./ListItems";
+import SingleItem from "./SingleItem";
 
 export default function Items() {
   const [items, setItems] = useState([]);
@@ -10,7 +10,7 @@ export default function Items() {
   useEffect(() => {
     if (!category_name) {
       fetchItems()
-        .then(({data}) => {
+        .then(({ data }) => {
           setItems(data.items);
         })
         .catch((err) => {
@@ -33,6 +33,7 @@ export default function Items() {
           return (
             <li className="list" key={item.item_id}>
               {item.item_name}, {item.description}
+              <p>£{item.price / 100}</p>
               <div className="images">
                 <img src={item.img_url} alt={item.item_name} />
               </div>
@@ -40,6 +41,7 @@ export default function Items() {
           );
         })}
       </ul>
+      {/* <SingleItem items={items} /> */}
     </>
   );
 }

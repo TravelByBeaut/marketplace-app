@@ -35,3 +35,16 @@ button:active {
 .images {
   padding: 20px;
 }
+
+.list-items {
+  padding-bottom: 20%;
+  padding-top: 2%;
+  margin: auto auto;
+  width: 200px;
+  height: 100px;
+}
+
+textarea {
+  padding: 5px;
+  margin: 10px;
+}
