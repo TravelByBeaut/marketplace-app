@@ -1,42 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { listItem } from "../api";
 
-function App() {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-
-  const onTitleChange = (e) => setTitle(e.target.value);
-  const onBodyChange = (e) => setBody(e.target.value);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const data = { title, body };
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
-    fetch("https://jsonplaceholder.typicode.com/posts", requestOptions)
-      .then((response) => response.json())
-      .then((res) => console.log(res));
+export default function ListItems({ items, setItems, category, setCategory }) {
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+ 
+  const handleItemName = (event) => setItems(event.target.value);
+  const handleDescription = (event) => setDescription(event.target.value);
+  const handleCategory = (event) => setCategory(event.target.value);
+  const handleSubmit = (event) => {
+    event.preventDefault();
   };
+  useEffect(() => {
+    listItem(
+      items.item_name,
+      items.description,
+      items.img_url,
+      price,
+      items.category_name 
+    )
+      .then(({ data }) => { 
+        setItems(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
-    <div className="App">
+    <div className="list-items">
       <form>
         <input
-          placeholder="Title"
-          value={title}
-          onChange={onTitleChange}
+          placeholder="item name"
+          value={items.item_name}
+          onChange={handleItemName}
           required
         />{" "}
         <textarea
-          placeholder="Body"
-          value={body}
-          onChange={onBodyChange}
+          placeholder="description"
+          value={items.description}
+          onChange={handleDescription}
+          required
+        />{" "}
+        <textarea
+          placeholder="category"
+          value={items.category_name}
+          onChange={handleCategory}
+          required
+        />{" "}
+        <textarea
+          placeholder="category"
+          value={price}
+          onChange={handleCategory}
           required
         />{" "}
         <button type="submit" onClick={handleSubmit}>
-          Create Post
+          List item
         </button>
       </form>
     </div>

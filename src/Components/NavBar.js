@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchCategories } from "../api";
 
-export default function NavBar({ setCategory }) {
+export default function NavBar() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -15,17 +15,21 @@ export default function NavBar({ setCategory }) {
       });
   }, []);
 
-  return (
+  return ( 
     <>
       {categories.map((category) => {
         return (
-          <Link to={`items/${category.category_name}`}>
-            <button key={category.category_name} value={category.category_name}>
+          <Link
+            to={`items/${category.category_name} `}
+            key={category.category_name}
+          >
+            <button value={category.category_name}>
               {category.category_name}
             </button>
           </Link>
         );
       })}
+      <button>List item</button>
     </>
   );
 }

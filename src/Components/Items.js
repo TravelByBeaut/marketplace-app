@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchItemsByCategory, fetchItems } from "../api";
+import ListItems from "./ListItems";
 
 export default function Items() {
   const [items, setItems] = useState([]);
@@ -9,7 +10,7 @@ export default function Items() {
   useEffect(() => {
     if (!category_name) {
       fetchItems()
-        .then((data) => {
+        .then(({data}) => {
           setItems(data.items);
         })
         .catch((err) => {
@@ -17,7 +18,7 @@ export default function Items() {
         });
     } else {
       fetchItemsByCategory(category_name)
-        .then((data) => {
+        .then(({ data }) => {
           setItems(data.items);
         })
         .catch((err) => {
@@ -25,19 +26,20 @@ export default function Items() {
         });
     }
   }, [category_name]);
-
   return (
-    <ul>
-      {items.map((item) => {
-        return (
-          <li className="list" key={item.item_id}>
-            {item.item_name}, {item.description}
-            <div className="images">
-              <img src={item.img_url} alt={item.item_name} />
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <ul>
+        {items.map((item) => {
+          return (
+            <li className="list" key={item.item_id}>
+              {item.item_name}, {item.description}
+              <div className="images">
+                <img src={item.img_url} alt={item.item_name} />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 }
